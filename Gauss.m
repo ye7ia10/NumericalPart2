@@ -7,7 +7,7 @@ classdef Gauss < handle
         a;
         b;
         n;
-        tol;
+        tol = 0.00001;
         er;
     end
     
