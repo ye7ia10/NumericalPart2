@@ -1,7 +1,7 @@
 function varargout = GuiSle(varargin)
 
 
-% Last Modified by GUIDE v2.5 06-May-2019 00:08:01
+% Last Modified by GUIDE v2.5 06-May-2019 13:34:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -144,6 +144,7 @@ function AddEqn_Callback(hObject, eventdata, handles)
  arr{end+1} = choosen;
  setGlobalArr(arr);
  getVar(choosen);
+ set(handles.eqBox,'str', getGlobalArr); 
  getGlobalArr
  getGlobalArrVars
  
@@ -279,4 +280,27 @@ end
 if strcmp(choosen, 'LU')
 end
 if strcmp(choosen, 'Gauss-Seidel')
+end
+
+
+% --- Executes on selection change in eqBox.
+function eqBox_Callback(hObject, eventdata, handles)
+% hObject    handle to eqBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns eqBox contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from eqBox
+
+
+% --- Executes during object creation, after setting all properties.
+function eqBox_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to eqBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
 end
