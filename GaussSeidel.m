@@ -7,22 +7,19 @@ classdef GaussSeidel<handle
         roots= [];
         maxIterations = 50;
         eps =  0.00001;
-        eqns= [];
+        eqns= {};
         data = [];
         signF = 5;
         ExTime  = 0;
         precession =0;
-        h = 'x(i-1)            x(i)            x(i+1)            Error';
-        tablehead = {'X (i-1)', 'X (i)', 'X (i+1)', 'Error'};
     end
     
     methods 
         %constructor of the method
-        function  obj = GaussSeidel(eqns, max, ep, sign)
+        function  obj = GaussSeidel(eqns, max, ep)
            obj.eqns = eqns;
            obj.maxIterations = max;
            obj.eps = ep;
-           obj.signF = sign;
         end
         %setter of the input function
         function obj = set.eqns(obj, eqn)
@@ -71,9 +68,11 @@ classdef GaussSeidel<handle
         end
         
         %x0 be our initial guesses and obj.eqn are the functions
-        function obj = calc(obj,x)
-            tic;
-            eqn = {' 3*y +12*x- 5*z - 1','x + 5*y +3* z - 28','3* x + 7*y + 13*z -76'};
+       function obj = calc(obj,x)
+        
+           obj.eqns
+           x
+             tic;
             equationsToMatrix(sym(obj.eqns));
             [a,b] = equationsToMatrix(sym(obj.eqns));
             z=[];
@@ -87,7 +86,8 @@ classdef GaussSeidel<handle
             obj.i=1;
             last=[];
             e=[];
-            while(obj.i==1||~((abs(e(1)-obj.eps)<0)&&(abs(e(2)-obj.eps)<0)&&(abs(e(3)-obj.eps)<0)))
+            while(true)
+            
                 if obj.i > obj.maxIterations
                     break;
                 end
@@ -97,12 +97,13 @@ classdef GaussSeidel<handle
                     e(ii)=abs((x(ii)-last(ii))/x(ii)); 
                 end
                 
-                obj.data(obj.i,1:3)=x;
-                obj.data(obj.i,4:6)=e;
+                obj.data(obj.i,1:size(x,2))=x;
+                
+                obj.data(obj.i,size(x,2)+1:2*size(x,2))=e;
                 obj.i=obj.i+1;
 
             end
-            obj.root=x;
+            obj.roots = x;
             obj.ExTime=toc;
             if(obj.i>1)
                 for ii=1 :size(x,2)

@@ -31,6 +31,15 @@ function arr = getGlobalArr
 global eq
 arr = eq;
 
+%make global array for equations.
+function setGlobalInit(ins)
+global ing
+ing = ins;
+
+function ins = getGlobalInit
+global ing
+ins = ing;
+
 %make global array for variables
 function setGlobalArrVars(arrVar)
 global vars
@@ -61,6 +70,7 @@ set(handles.nomIt, 'enable', 'off');
 set(handles.eps, 'enable', 'off');
 setGlobalArr({});
 setGlobalArrVars({});
+setGlobalInit([]);
 
 % UIWAIT makes GuiSle wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -180,6 +190,17 @@ function setInit_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+%get the initial guess
+     init = get(handles.initg, 'String');
+     if isempty(init)
+     msgbox('Intial guess is empty', 'Error','error');
+     return
+     end
+     init =  str2double(init);
+     initg = getGlobalInit;
+     initg = [initg; init]
+     setGlobalInit(initg);
+
 
 
 function nomIt_Callback(hObject, eventdata, handles)
@@ -280,6 +301,24 @@ end
 if strcmp(choosen, 'LU')
 end
 if strcmp(choosen, 'Gauss-Seidel')
+    
+ %get number of Iterations
+ nomIT = get(handles.nomIt, 'String');
+     if isempty(nomIT)
+     nomIT = 50;
+     else
+     nomIT = str2double(nomIT);
+     end
+ epsilon = get(handles.eps, 'String');
+     if isempty(epsilon)
+        epsilon = 0.00001;
+     else
+       epsilon = str2double(epsilon);
+     end
+     
+  objec = GaussSeidel(getGlobalArr, nomIT, epsilon);
+  objec.calc(getGlobalInit);
+  objec.data
 end
 
 

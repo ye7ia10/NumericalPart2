@@ -6,6 +6,7 @@ classdef Gauss < handle
         x;
         a;
         b;
+        eqns;
         n;
         tol = 0.00001;
         er;
