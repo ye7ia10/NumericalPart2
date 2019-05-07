@@ -26,6 +26,24 @@ classdef GuassJordan < handle
         % Forward Elimination 
         % Shifting Loop for column operation 
         for i=1:c-1 
+        
+        % making pivoting to both arrays coff and const.
+        max = abs(obj.a(n,n));
+        index = n;
+        for l = n+1 : m
+            if abs(obj.a(l,n)) > max
+                max = abs(obj.a(l,n));
+                index = l;
+            end
+        end
+        temp=obj.a(n,:);
+        obj.a(n,:)=obj.a(index,:);
+        obj.a(index,:)=temp;
+
+        temp=obj.b(n,:);
+        obj.b(n,:)=obj.b(index,:);
+        obj.b(index,:)=temp;
+        
         %Making each desired column component zero 
         for r=z:m 
         % Checking if any Lower triangle is Already Zero or not 

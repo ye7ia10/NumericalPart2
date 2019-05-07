@@ -297,28 +297,37 @@ if strcmp(choosen, 'Gauss-Jordan')
     obj.b
 end
 if strcmp(choosen, 'Gauss')
+    obj = Gauss();
+    obj.eqns = getGlobalArr;
+    obj.solve;
+    obj.x
 end
 if strcmp(choosen, 'LU')
+    obj = LU();
+    obj.eqns = getGlobalArr;
+    obj.getLU;
+    obj. ans
 end
 if strcmp(choosen, 'Gauss-Seidel')
     
- %get number of Iterations
- nomIT = get(handles.nomIt, 'String');
-     if isempty(nomIT)
-     nomIT = 50;
-     else
-     nomIT = str2double(nomIT);
-     end
- epsilon = get(handles.eps, 'String');
-     if isempty(epsilon)
-        epsilon = 0.00001;
-     else
-       epsilon = str2double(epsilon);
-     end
-     
-  objec = GaussSeidel(getGlobalArr, nomIT, epsilon);
-  objec.calc(getGlobalInit);
-  objec.data
+     %get number of Iterations
+     nomIT = get(handles.nomIt, 'String');
+         if isempty(nomIT)
+         nomIT = 50;
+         else
+         nomIT = str2double(nomIT);
+         end
+     epsilon = get(handles.eps, 'String');
+         if isempty(epsilon)
+            epsilon = 0.00001;
+         else
+           epsilon = str2double(epsilon);
+         end
+
+      objec = GaussSeidel(getGlobalArr, nomIT, epsilon);
+      objec.calc(getGlobalInit);
+      objec.data
+      objec.roots
 end
 
 

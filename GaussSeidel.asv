@@ -76,7 +76,7 @@ classdef GaussSeidel<handle
             equationsToMatrix(sym(obj.eqns));
             [a,b] = equationsToMatrix(sym(obj.eqns));
 
-            
+            obj.data(1,4:6)=1;
             %mainloop
             obj.i=1;
             last=[];

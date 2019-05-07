@@ -3,7 +3,7 @@ classdef Gauss < handle
     %   Detailed explanation goes here
     
     properties
-        x;
+        x = [] ;
         a;
         b;
         eqns;
@@ -14,9 +14,12 @@ classdef Gauss < handle
     
     methods
         function obj = solve(obj)
+            obj.n = length(obj.eqns)
             s=zeros(1,obj.n);
+            [obj.a,obj.b]=equationsToMatrix(sym(obj.eqns)); 
             obj.a
             obj.b
+            
             for i=1:obj.n
                 s(i) = abs(obj.a(i,1));
                 for j=2:obj.n
