@@ -9,7 +9,7 @@ classdef Gauss < handle
         eqns;
         n;
         tol = 0.00001;
-        er;
+        er = 0;
     end
     
     methods

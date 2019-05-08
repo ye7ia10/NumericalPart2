@@ -31,14 +31,6 @@ function arr = getGlobalArr
 global eq
 arr = eq;
 
-function setGlobalTemp(rr)
-global Rtemp
-Rtemp = rr;
-
-function rr = getGlobalTemp
-global Rtemp
-rr = Rtemp;
-
 %make global array for equations.
 function setGlobalInit(ins)
 global ing
@@ -88,7 +80,6 @@ setGlobalArr({});
 setGlobalArrVars({});
 setGlobalInit([]);
 setGlobalCounter(1);
-set(handles.table,'ColumnWidth',{100});
 
 % UIWAIT makes GuiSle wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -216,23 +207,14 @@ function setInit_Callback(hObject, eventdata, handles)
      msgbox('Intial guess is empty', 'Error','error');
      return
      end
-     rr = getGlobalTemp;
-     cu = getGlobalCounter;
-     if cu > length(getGlobalArr)
-         msgbox('End of Variable', 'Error','error');
-         return;
-     end
-     temp = strcat(rr{1 , cu} ,' =  ');
-     temp = strcat(temp, init);
-     rr{1 , cu}  = temp;
-     set(handles.table,'data',rr);
+     rr = getGlobalArrVars;
+     cu = getGlobalCounter
+     rr{1 , 1}  = '10';
+     rr
      init =  str2double(init);
      initg = getGlobalInit;
      initg = [initg; init]
      setGlobalInit(initg);
-     setGlobalCounter(cu + 1);
-     setGlobalTemp(rr);
-    
      
 
 
@@ -294,7 +276,6 @@ function arr = getVar(str)
             end
             arrVars =unique(sort(arrVars));
             setGlobalArrVars(arrVars);
-            setGlobalTemp(arrVars);
             
  
 
