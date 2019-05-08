@@ -4,8 +4,8 @@ classdef Gauss < handle
     
     properties
         x = [] ;
-        a;
-        b;
+        a = [] ;
+        b = [] ;
         eqns;
         n;
         tol = 0.00001;

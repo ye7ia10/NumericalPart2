@@ -1,7 +1,7 @@
 function varargout = GuiSle(varargin)
 
 
-% Last Modified by GUIDE v2.5 06-May-2019 13:34:50
+% Last Modified by GUIDE v2.5 08-May-2019 17:28:15
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -330,6 +330,10 @@ if strcmp(choosen, 'Gauss-Jordan')
     obj.eqns = getGlobalArr;
     obj.solve;
     obj.b
+    WriteFile(obj,4);
+    setappdata(0,'roots',obj.b);
+    setappdata(0,'coff',obj.a);
+    setappdata(0,'cons',obj.b);
 end
 if strcmp(choosen, 'Gauss')
     obj = Gauss();
@@ -337,13 +341,25 @@ if strcmp(choosen, 'Gauss')
     obj.n = size(getGlobalArr);
     obj.solve;
     obj.x
-    obj
+    WriteFile(obj,3);
+    setappdata(0,'roots',obj.x);
+    setappdata(0,'coff',obj.a);
+    setappdata(0,'cons',obj.b);
+   
 end
 if strcmp(choosen, 'LU')
     obj = LU();
     obj.eqns = getGlobalArr;
     obj.getLU;
-    obj. ans
+    obj.ans;
+    
+    setappdata(0,'L',obj.L);
+    setappdata(0,'U',obj.U);
+    setappdata(0,'cons',obj.b);
+    setappdata(0,'roots',obj.d);
+    
+    WriteFile(obj,1);
+    
 end
 if strcmp(choosen, 'Gauss-Seidel')
     
@@ -365,7 +381,35 @@ if strcmp(choosen, 'Gauss-Seidel')
       objec.calc(getGlobalInit);
       objec.data
       objec.roots
+      WriteFile(objec,2);
+      setappdata(0,'data',objec.data);
+      
+    obj = GuassJordan();
+    obj.eqns = getGlobalArr;
+    obj.solve;
+    obj.b;
+    setappdata(0,'jordan',obj.b);
+    
+    obj = Gauss();
+    obj.eqns = getGlobalArr;
+    obj.n = size(getGlobalArr);
+    obj.solve;
+    obj.x;
+    setappdata(0,'gauss',obj.x);
+    
+    obj = LU();
+    obj.eqns = getGlobalArr;
+    obj.getLU;
+    obj.ans;
+    setappdata(0,'lu',obj.d);
+    
 end
+
+setappdata(0,'variables',getGlobalArrVars);
+
+setappdata(0,'method',choosen);
+resultsp2;
+
 
 
 % --- Executes on selection change in eqBox.
@@ -389,3 +433,43 @@ function eqBox_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in fileChooser.
+function fileChooser_Callback(hObject, eventdata, handles)
+% hObject    handle to fileChooser (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    [file,path] = uigetfile
+    s = strcat(path , file);
+    file = FileReader;
+    file.read(s);
+    
+   
+    set(handles.equation, 'String', file.fun);
+%     set(handles.menue, 'String', file.method);
+    set(handles.menue, 'Value', file.methodnum);
+    menue_Callback(handles.menue, eventdata, handles)
+%    set(handles.menue,'Value', file.method)
+    set(handles.lower, 'String', file.lower);
+    set(handles.upper, 'String', file.upper);
+    set(handles.eps, 'String', file.eps);
+    set(handles.NomIt, 'String', file.NomIt);
+    set(handles.initial, 'String', file.init);
+
+
+% --- Executes on button press in Reset.
+function Reset_Callback(hObject, eventdata, handles)
+set(handles.initg, 'enable', 'off');
+set(handles.setInit, 'enable', 'off');
+set(handles.nomIt, 'enable', 'off');
+set(handles.eps, 'enable', 'off');
+setGlobalArr({});
+setGlobalArrVars({});
+setGlobalInit([]);
+setGlobalCounter(1);
+set(handles.table,'ColumnWidth',{100});
+ set(handles.eqBox,'str', ''); 
+% hObject    handle to Reset (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
