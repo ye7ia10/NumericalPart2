@@ -79,7 +79,7 @@ counter = co;
 
 function co = getCounter
 global counter
-co = counter;
+co = cou;
 
 
 
@@ -158,7 +158,7 @@ if (strcmp(method,'LU'))
     set(handles.text5,'string','U')
     cons = double(getappdata(0,'cons'))
     set(handles.uitable4,'data',cons)
-    set(handles.text7,'string','Forward Subs.')
+    set(handles.text7,'string','Constants')
     set(handles.text7,'visible','on')
     set(handles.uitable4,'visible','on')
     set(handles.text5,'visible','on')
@@ -207,8 +207,6 @@ rootLu = getappdata(0, 'lu');
 setRootGauss(rootGauss(1, i));
 setRootJordan(rootJordan(i ,1));
 setRootLU(rootLu(i, 1));
-
-setCounter(0)
 
 
 

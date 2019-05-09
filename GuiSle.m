@@ -355,8 +355,8 @@ if strcmp(choosen, 'LU')
     
     setappdata(0,'L',obj.L);
     setappdata(0,'U',obj.U);
-    setappdata(0,'cons',obj.b);
-    setappdata(0,'roots',obj.d);
+    setappdata(0,'cons',obj.d);
+    setappdata(0,'roots',obj.ans);
     
     WriteFile(obj,1);
     
@@ -401,7 +401,7 @@ if strcmp(choosen, 'Gauss-Seidel')
     obj.eqns = getGlobalArr;
     obj.getLU;
     obj.ans;
-    setappdata(0,'lu',obj.d);
+    setappdata(0,'lu',obj.ans);
     
 end
 
