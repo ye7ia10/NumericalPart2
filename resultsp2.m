@@ -27,11 +27,11 @@ function varargout = resultsp2(varargin)
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
-                   'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @resultsp2_OpeningFcn, ...
-                   'gui_OutputFcn',  @resultsp2_OutputFcn, ...
-                   'gui_LayoutFcn',  [] , ...
-                   'gui_Callback',   []);
+    'gui_Singleton',  gui_Singleton, ...
+    'gui_OpeningFcn', @resultsp2_OpeningFcn, ...
+    'gui_OutputFcn',  @resultsp2_OutputFcn, ...
+    'gui_LayoutFcn',  [] , ...
+    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
     gui_State.gui_Callback = str2func(varargin{1});
 end
@@ -113,7 +113,7 @@ if (strcmp(method,'Gauss-Seidel'))
     v = getappdata(0,'variables')
     set(handles.menu, 'string', v);
     set(handles.rootstable,'ColumnName',v);
-    while i <= length(getappdata(0,'variables')) 
+    while i <= length(getappdata(0,'variables'))
         v{1, i}
         errorArr{end+1} = strcat('e',v{1, i})
         i = i+1;
@@ -124,8 +124,9 @@ if (strcmp(method,'Gauss-Seidel'))
         i = i +1;
     end
     set(handles.coef,'ColumnName',v);
-    roots = getappdata(0,'data');
-    roots = roots(length(roots),1:length(errorArr));
+    data = getappdata(0,'data');
+    roots = data(length(data),1:length(errorArr));
+    n = length(roots)
     set(handles.rootstable,'data',roots);
     set(handles.texxt,'string','Iterations');
     coff = double(getappdata(0,'data'));
@@ -133,9 +134,27 @@ if (strcmp(method,'Gauss-Seidel'))
     set(handles.const,'visible','off')
     set(handles.text5,'visible','off')
     set(handles.axes1,'visible','on')
-     set(handles.menu,'visible','on')
-      set(handles.nxt,'visible','on')
-       set(handles.prev,'visible','on')
+    set(handles.menu,'visible','on')
+    
+    %     set(handles.nxt,'visible','on')
+    %     set(handles.prev,'visible','on')
+    get(handles.menu,'Value')
+    menu_Callback(handles.menu, eventdata, handles)
+%     axes(handles.axes1); % Switch current axes to axes11.
+%     for i=1:n
+%         x = data(1:length(data),i)'
+%         y = 1:length(data)
+%         t = 1:numel(x);
+%         xy = [x;y];
+%         hold on
+%         plot(x,y,'o:')
+%         pp = spline(t,xy);
+%         tInterp = linspace(1,numel(x));
+%         xyInterp = ppval(pp, tInterp);
+%         p(n) = plot(xyInterp(1,:),xyInterp(2,:));
+%     end
+%     legend('Gauss-Seidel','Gauss-Seidel');
+    
 end
 if (strcmp(method,'Gauss-Jordan'))
     set(handles.rootstable,'ColumnName',getappdata(0,'variables'))
@@ -178,7 +197,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = resultsp2_OutputFcn(hObject, eventdata, handles) 
+function varargout = resultsp2_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -193,6 +212,7 @@ function menu_Callback(hObject, eventdata, handles)
 v = getappdata(0,'variables')
 contents = cellstr(get(handles.menu,'String'));
 choosen = contents{get(handles.menu,'Value')};
+num = get(handles.menu,'Value')
 i = 1;
 while i <= length(v)
     if strcmp(choosen, v{1, i})
@@ -200,13 +220,38 @@ while i <= length(v)
     end
     i = i + 1;
 end
-rootGauss = getappdata(0, 'gauss');
-rootJordan = getappdata(0, 'jordan');
-rootLu = getappdata(0, 'lu');
-
-setRootGauss(rootGauss(1, i));
-setRootJordan(rootJordan(i ,1));
-setRootLU(rootLu(i, 1));
+rootGauss = getappdata(0, 'gauss')
+rootJordan = getappdata(0, 'jordan')'
+rootLu = getappdata(0, 'lu')'
+% setRootGauss(rootGauss(1, i));
+% setRootJordan(rootJordan(i ,1));
+% setRootLU(rootLu(i, 1));
+data = getappdata(0,'data');
+roots = data(length(data),1:length(rootGauss));
+n = length(roots)
+    axes(handles.axes1); % Switch current axes to axes11.
+    cla
+        x = data(1:length(data),num)'
+        y = 1:length(data)
+        t = 1:numel(x);
+        xy = [y;x];
+        hold on
+        plot(y,x,'o:')
+        pp = spline(t,xy);
+        tInterp = linspace(1,numel(x));
+        xyInterp = ppval(pp, tInterp);
+        p = plot(xyInterp(1,:),xyInterp(2,:));
+        
+%     l1 = line( [rootGauss(num) rootGauss(num)], ylim);
+    l1 = line( xlim, [rootGauss(num) rootGauss(num)]);
+    set(l1,'Color','m');
+%     l2 = line( [rootJordan(num) rootJordan(num)], ylim);
+    l2 = line( xlim, [rootJordan(num) rootJordan(num)]);
+    set(l2,'Color','b');   
+%     l3 = line( [rootLu(num) rootLu(num)], ylim);
+    l3 = line( xlim, [rootLu(num) rootLu(num)]);
+    set(l3,'Color','g');   
+    legend([p l1 l2 l3],'Gauss-Seidel','Gauss','Gauss-Jordan','LU');
 
 setCounter(0)
 
