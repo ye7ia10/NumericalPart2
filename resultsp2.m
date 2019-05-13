@@ -107,11 +107,11 @@ set(handles.uitable4,'ColumnWidth',{100});
 set(handles.const,'ColumnWidth',{100});
 if (strcmp(method,'Gauss'))
     set(handles.iter,'visible','off');
-set(handles.editIt,'visible','off');
-set(handles.time,'visible','off');
-set(handles.edittime,'visible','off');
-set(handles.pre,'visible','off');
-set(handles.editpre,'visible','off');
+    set(handles.editIt,'visible','off');
+    set(handles.time,'visible','off');
+    set(handles.edittime,'visible','off');
+    set(handles.pre,'visible','off');
+    set(handles.editpre,'visible','off');
     set(handles.rootstable,'ColumnName',getappdata(0,'variables'))
     roots = num2cell(getappdata(0,'roots'))
     set(handles.rootstable,'data',roots)
@@ -121,18 +121,6 @@ set(handles.editpre,'visible','off');
     set(handles.const,'data',cons)
 end
 if (strcmp(method,'Gauss-Seidel'))
-set(handles.iter,'visible','on');
-set(handles.editIt,'visible','on');
-set(handles.time,'visible','on');
-set(handles.edittime,'visible','on');
-set(handles.pre,'visible','on');
-set(handles.editpre,'visible','on');
-
-set(handles.editIt,'string',getappdata(0, 'number'));
-set(handles.edittime,'string',getappdata(0, 'time'));
-set(handles.editpre,'string',min(getappdata(0, 'pre')));
-    
-    
     errorArr = {};
     i = 1;
     v = getappdata(0,'variables')
@@ -149,14 +137,9 @@ set(handles.editpre,'string',min(getappdata(0, 'pre')));
         i = i +1;
     end
     set(handles.coef,'ColumnName',v);
-    data = getappdata(0,'data')
-    
-%     length(errorArr)
-%     length(data)
-    [n,m] = size(data)
-    roots = data(n,1:length(errorArr))
-    disp('******************************************************');
-    n = length(roots)
+    data = getappdata(0,'data');
+    [rws clms] = size(data)
+    roots = data(rws,1:clms/2);
     set(handles.rootstable,'data',roots);
     set(handles.texxt,'string','Iterations');
     coff = double(getappdata(0,'data'));
@@ -165,26 +148,8 @@ set(handles.editpre,'string',min(getappdata(0, 'pre')));
     set(handles.text5,'visible','off')
     set(handles.axes1,'visible','on')
     set(handles.menu,'visible','on')
-    
-    %     set(handles.nxt,'visible','on')
-    %     set(handles.prev,'visible','on')
-    get(handles.menu,'Value')
+    set(handles.menu,'Value',1)
     menu_Callback(handles.menu, eventdata, handles)
-%     axes(handles.axes1); % Switch current axes to axes11.
-%     for i=1:n
-%         x = data(1:length(data),i)'
-%         y = 1:length(data)
-%         t = 1:numel(x);
-%         xy = [x;y];
-%         hold on
-%         plot(x,y,'o:')
-%         pp = spline(t,xy);
-%         tInterp = linspace(1,numel(x));
-%         xyInterp = ppval(pp, tInterp);
-%         p(n) = plot(xyInterp(1,:),xyInterp(2,:));
-%     end
-%     legend('Gauss-Seidel','Gauss-Seidel');
-    
 end
 if (strcmp(method,'Gauss-Jordan'))
     set(handles.iter,'visible','off');
@@ -265,35 +230,38 @@ end
 rootGauss = getappdata(0, 'gauss')
 rootJordan = getappdata(0, 'jordan')'
 rootLu = getappdata(0, 'lu')'
-% setRootGauss(rootGauss(1, i));
-% setRootJordan(rootJordan(i ,1));
-% setRootLU(rootLu(i, 1));
-data = getappdata(0,'data');
-roots = data(length(data),1:length(rootGauss));
-n = length(roots)
-    axes(handles.axes1); % Switch current axes to axes11.
-    cla
-        x = data(1:length(data),num)'
-        y = 1:length(data)
-        t = 1:numel(x);
-        xy = [y;x];
-        hold on
-        plot(y,x,'o:')
-        pp = spline(t,xy);
-        tInterp = linspace(1,numel(x));
-        xyInterp = ppval(pp, tInterp);
-        p = plot(xyInterp(1,:),xyInterp(2,:));
-        
+
+
+data = getappdata(0,'data')
+[rws clms] = size(data)
+roots = data(rws,1:(clms/2))
+length(roots)
+
+
+axes(handles.axes1); % Switch current axes to axes11.
+cla
+
+x = data(:,num)'
+y = 1:rws
+t = 1:numel(x);
+xy = [y;x];
+hold on
+plot(y,x,'o:')
+pp = spline(t,xy);
+tInterp = linspace(1,numel(x));
+xyInterp = ppval(pp, tInterp);
+p = plot(xyInterp(1,:),xyInterp(2,:));
+
 %     l1 = line( [rootGauss(num) rootGauss(num)], ylim);
-    l1 = line( xlim, [rootGauss(num) rootGauss(num)]);
-    set(l1,'Color','m');
+l1 = line( xlim, [rootGauss(num) rootGauss(num)]);
+set(l1,'Color','m');
 %     l2 = line( [rootJordan(num) rootJordan(num)], ylim);
-    l2 = line( xlim, [rootJordan(num) rootJordan(num)]);
-    set(l2,'Color','b');   
+l2 = line( xlim, [rootJordan(num) rootJordan(num)]);
+set(l2,'Color','b');
 %     l3 = line( [rootLu(num) rootLu(num)], ylim);
-    l3 = line( xlim, [rootLu(num) rootLu(num)]);
-    set(l3,'Color','g');   
-    legend([p l1 l2 l3],'Gauss-Seidel','Gauss','Gauss-Jordan','LU');
+l3 = line( xlim, [rootLu(num) rootLu(num)]);
+set(l3,'Color','g');
+legend([p l1 l2 l3],'Gauss-Seidel','Gauss','Gauss-Jordan','LU');
 
 setCounter(0)
 
