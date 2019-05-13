@@ -254,13 +254,13 @@ p = plot(xyInterp(1,:),xyInterp(2,:));
 
 %     l1 = line( [rootGauss(num) rootGauss(num)], ylim);
 l1 = line( xlim, [rootGauss(num) rootGauss(num)]);
-set(l1,'Color','m');
+set(l1,'Color','m','LineWidth',2);
 %     l2 = line( [rootJordan(num) rootJordan(num)], ylim);
 l2 = line( xlim, [rootJordan(num) rootJordan(num)]);
-set(l2,'Color','b');
+set(l2,'Color','b','LineWidth',1.25);
 %     l3 = line( [rootLu(num) rootLu(num)], ylim);
 l3 = line( xlim, [rootLu(num) rootLu(num)]);
-set(l3,'Color','g');
+set(l3,'Color','g','LineWidth',1);
 legend([p l1 l2 l3],'Gauss-Seidel','Gauss','Gauss-Jordan','LU');
 
 setCounter(0)
