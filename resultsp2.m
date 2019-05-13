@@ -22,7 +22,7 @@ function varargout = resultsp2(varargin)
 
 % Edit the above text to modify the response to help resultsp2
 
-% Last Modified by GUIDE v2.5 08-May-2019 17:05:01
+% Last Modified by GUIDE v2.5 12-May-2019 13:16:12
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -92,6 +92,13 @@ function resultsp2_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to resultsp2 (see VARARGIN)
 
+set(handles.iter,'visible','off');
+set(handles.editIt,'visible','off');
+set(handles.time,'visible','off');
+set(handles.edittime,'visible','off');
+set(handles.pre,'visible','off');
+set(handles.editpre,'visible','off');
+
 method = getappdata(0,'method');
 set(handles.methname,'String',method);
 set(handles.rootstable,'ColumnWidth',{100});
@@ -99,6 +106,12 @@ set(handles.coef,'ColumnWidth',{100});
 set(handles.uitable4,'ColumnWidth',{100});
 set(handles.const,'ColumnWidth',{100});
 if (strcmp(method,'Gauss'))
+    set(handles.iter,'visible','off');
+set(handles.editIt,'visible','off');
+set(handles.time,'visible','off');
+set(handles.edittime,'visible','off');
+set(handles.pre,'visible','off');
+set(handles.editpre,'visible','off');
     set(handles.rootstable,'ColumnName',getappdata(0,'variables'))
     roots = num2cell(getappdata(0,'roots'))
     set(handles.rootstable,'data',roots)
@@ -108,6 +121,18 @@ if (strcmp(method,'Gauss'))
     set(handles.const,'data',cons)
 end
 if (strcmp(method,'Gauss-Seidel'))
+set(handles.iter,'visible','on');
+set(handles.editIt,'visible','on');
+set(handles.time,'visible','on');
+set(handles.edittime,'visible','on');
+set(handles.pre,'visible','on');
+set(handles.editpre,'visible','on');
+
+set(handles.editIt,'string',getappdata(0, 'number'));
+set(handles.edittime,'string',getappdata(0, 'time'));
+set(handles.editpre,'string',min(getappdata(0, 'pre')));
+    
+    
     errorArr = {};
     i = 1;
     v = getappdata(0,'variables')
@@ -124,8 +149,13 @@ if (strcmp(method,'Gauss-Seidel'))
         i = i +1;
     end
     set(handles.coef,'ColumnName',v);
-    data = getappdata(0,'data');
-    roots = data(length(data),1:length(errorArr));
+    data = getappdata(0,'data')
+    
+%     length(errorArr)
+%     length(data)
+    [n,m] = size(data)
+    roots = data(n,1:length(errorArr))
+    disp('******************************************************');
     n = length(roots)
     set(handles.rootstable,'data',roots);
     set(handles.texxt,'string','Iterations');
@@ -157,6 +187,12 @@ if (strcmp(method,'Gauss-Seidel'))
     
 end
 if (strcmp(method,'Gauss-Jordan'))
+    set(handles.iter,'visible','off');
+    set(handles.editIt,'visible','off');
+    set(handles.time,'visible','off');
+    set(handles.edittime,'visible','off');
+    set(handles.pre,'visible','off');
+    set(handles.editpre,'visible','off');
     set(handles.rootstable,'ColumnName',getappdata(0,'variables'))
     roots = double(getappdata(0,'roots'))'
     set(handles.rootstable,'data',roots)
@@ -166,6 +202,12 @@ if (strcmp(method,'Gauss-Jordan'))
     set(handles.const,'data',cons)
 end
 if (strcmp(method,'LU'))
+    set(handles.iter,'visible','off');
+    set(handles.editIt,'visible','off');
+    set(handles.time,'visible','off');
+    set(handles.edittime,'visible','off');
+    set(handles.pre,'visible','off');
+    set(handles.editpre,'visible','off');
     set(handles.rootstable,'ColumnName',getappdata(0,'variables'))
     roots = num2cell(getappdata(0,'roots')')
     set(handles.rootstable,'data',roots)
@@ -283,3 +325,72 @@ function prev_Callback(hObject, eventdata, handles)
 % hObject    handle to prev (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+
+function editpre_Callback(hObject, eventdata, handles)
+% hObject    handle to editpre (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editpre as text
+%        str2double(get(hObject,'String')) returns contents of editpre as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function editpre_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editpre (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function editIt_Callback(hObject, eventdata, handles)
+% hObject    handle to editIt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editIt as text
+%        str2double(get(hObject,'String')) returns contents of editIt as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function editIt_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editIt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edittime_Callback(hObject, eventdata, handles)
+% hObject    handle to edittime (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edittime as text
+%        str2double(get(hObject,'String')) returns contents of edittime as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edittime_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edittime (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

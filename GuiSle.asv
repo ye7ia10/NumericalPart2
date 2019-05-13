@@ -263,13 +263,12 @@ end
 %sort them alphapetic
 function arr = getVar(str)
             i = 1;
-            str =char(str)
-            nz = length(str)
+            n = length(str);
             arrVars = getGlobalArrVars;
-            while (i <= nz)
+            while (i <= n)
                 s =  '';
                if isletter(str(i))
-                   while (i <= nz)
+                   while (i <= n)
                       if isletter(str(i))
                           s = strcat(s,str(i));
                           i = i+1;
@@ -289,7 +288,6 @@ function arr = getVar(str)
                       end
                       
                    end
-                   disp('********');
                    arrVars{end+1} = s;
                end
                i = i+1;
@@ -355,7 +353,7 @@ if strcmp(choosen, 'LU')
     obj.getLU;
     obj.ans;
     
-   
+    setappdata(0,'number',obj);
     
     setappdata(0,'L',obj.L);
     setappdata(0,'U',obj.U);
@@ -385,13 +383,6 @@ if strcmp(choosen, 'Gauss-Seidel')
       objec.calc(getGlobalInit);
       objec.data
       objec.roots
-      
-
-    setappdata(0, 'number', objec.i);
-    setappdata(0, 'time', objec.ExTime);
-    setappdata(0, 'pre' , objec.precession);
-    
-    
       WriteFile(objec,2);
       setappdata(0,'data',objec.data);
       
@@ -455,26 +446,20 @@ function fileChooser_Callback(hObject, eventdata, handles)
     s = strcat(path , file);
     file = FileReader;
     file.read(s);
-    set(handles.MethodChooser, 'Value', file.MethodNum);
-    MethodChooser_Callback(hObject, eventdata, handles);
-    j = 1;
-    [n,m] = size (file.funs)
-    setGlobalArr(file.funs);
-    set(handles.eqBox,'str', getGlobalArr); 
-    while (j <= m)
-      xx =   file.funs(1, j)
-      getVar(xx)
-      j = j+1
-    end
-    set(handles.table,'data',getGlobalArrVars);
-    if file.MethodNum == 5
-        setGlobalInit(file.init);
-        set(handles.nomIt,'string', file.NomIt); 
-        set(handles.eps,'string', file.eps); 
-    end
     
+   
+    set(handles.equation, 'String', file.fun);
+%     set(handles.menue, 'String', file.method);
+    set(handles.menue, 'Value', file.methodnum);
+    menue_Callback(handles.menue, eventdata, handles)
+%    set(handles.menue,'Value', file.method)
+    set(handles.lower, 'String', file.lower);
+    set(handles.upper, 'String', file.upper);
+    set(handles.eps, 'String', file.eps);
+    set(handles.NomIt, 'String', file.NomIt);
+    set(handles.initial, 'String', file.init);
 
-    
+
 % --- Executes on button press in Reset.
 function Reset_Callback(hObject, eventdata, handles)
 set(handles.initg, 'enable', 'off');
