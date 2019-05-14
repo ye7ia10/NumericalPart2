@@ -45,6 +45,7 @@ classdef Gauss < handle
                 end
                 for i=k+1:obj.n
                     factor = obj.a(i,k)/obj.a(k,k)
+                    obj.a(i,k) = 0;
                     for j=k+1:obj.n
                         obj.a(i,j) = obj.a(i,j) - factor * obj.a(k,j);
                     end

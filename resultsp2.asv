@@ -192,7 +192,7 @@ if (strcmp(method,'LU'))
     U = double(getappdata(0,'U'))
     cons = double(getappdata(0,'cons'))
     set(handles.const,'data',cons)
-    set(handles.text5,'string','D')
+    set(handles.text5,'string','U')
     
     set(handles.uitable4,'data',U)
     set(handles.text7,'string','U')

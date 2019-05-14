@@ -36,7 +36,7 @@ classdef GuassJordan < handle
                 index = l;
             end
         end
-        temp=obj.a(n,:);
+        temp=obj.a(n,:); %starts forward elem.
         obj.a(n,:)=obj.a(index,:);
         obj.a(index,:)=temp;
 
